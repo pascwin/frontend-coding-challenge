@@ -1,17 +1,39 @@
-import React, {useEffect} from 'react';
+import { useEffect, useState } from 'react';
+import { AbsencesTable } from './components/absencesTable';
 
-function App() {
+export interface IAbsences {
+  name: string,
+  type: string,
+  startDate: string,
+  endDate: string,
+  memberNote: string,
+  confirmedAt: string,
+  rejectedAt: string,
+  admitternote: string,
+}
+
+const App = () => {
+  const [absences, setAbsences] = useState<any[]>([])
+  // const [members, setMembers] = useState<any[]>([])
 
   useEffect(() => {
     fetch("http://localhost:3000/absences")
-    .then(res => res.json())
-    .then(data => console.log(data))
+      .then(res => res.json())
+      .then(absences => setAbsences(absences))
   }, [])
+
+
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/members")
+  //     .then(res => res.json())
+  //     .then(members => setMembers(members))
+  // }, [])
 
   return (
     <div className="App">
-      hallo
+      <AbsencesTable absences={absences} />
     </div>
+
   );
 }
 
