@@ -2,6 +2,7 @@ import { IAbsences } from "../App"
 import AbsenceRow from "./absenceRow"
 import { Table } from "react-bootstrap"
 
+
 export const AbsencesTable = ({ absences }: { absences: Array<IAbsences> }) => {
     return (
         <div>

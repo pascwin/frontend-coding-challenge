@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AbsencesTable } from './components/absencesTable';
+import { AppPagination } from './components/Pagination';
+import "./App.css"
 
 export interface IAbsences {
   name: string,
@@ -14,7 +16,9 @@ export interface IAbsences {
 
 const App = () => {
   const [absences, setAbsences] = useState<any[]>([])
-  // const [members, setMembers] = useState<any[]>([])
+  const [numberPages, setNumberPages] = useState(10)
+  const [actualPage, setActualPage] = useState(1)
+  const [absencesOnPage, setAbsencesOnPage] = useState<any[]>([])
 
   useEffect(() => {
     fetch("http://localhost:3000/absences")
@@ -22,6 +26,12 @@ const App = () => {
       .then(absences => setAbsences(absences))
   }, [])
 
+  useEffect(() => {
+    const startingIndex = actualPage === 1 ? 0 : (actualPage - 1) * 10;
+    const endingIndex = actualPage * 10;
+    setNumberPages(Math.ceil(absences.length / 10))
+    setAbsencesOnPage(absences.slice(startingIndex, endingIndex))
+  }, [absences, actualPage])
 
   // useEffect(() => {
   //   fetch("http://localhost:3000/members")
@@ -31,8 +41,9 @@ const App = () => {
 
   return (
     <div className="App">
-      <AbsencesTable absences={absences} />
-    </div>
+      <AbsencesTable absences={absencesOnPage} />
+      <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
+    </div> 
 
   );
 }
