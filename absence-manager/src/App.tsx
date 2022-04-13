@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AbsencesTable } from './components/absencesTable';
-import { AppPagination } from './components/Pagination';
+import { AppPagination } from './components/appPagination'
+import { Dashboard } from './components/dashboard';
 import "./App.css"
 
 export interface IAbsences {
@@ -9,9 +10,8 @@ export interface IAbsences {
   startDate: string,
   endDate: string,
   memberNote: string,
-  confirmedAt: string,
-  rejectedAt: string,
-  admitternote: string,
+  status: string,
+  admitterNote: string,
 }
 
 const App = () => {
@@ -19,11 +19,15 @@ const App = () => {
   const [numberPages, setNumberPages] = useState(10)
   const [actualPage, setActualPage] = useState(1)
   const [absencesOnPage, setAbsencesOnPage] = useState<any[]>([])
+  const [allAbsences, setAllAbsences] = useState<any[]>([])
 
   useEffect(() => {
-    fetch("http://localhost:3000/absences")
+    fetch("http://localhost:3000/absences2")
       .then(res => res.json())
-      .then(absences => setAbsences(absences))
+      .then(absences => {
+        setAbsences(absences)
+        setAllAbsences(absences)
+      })
   }, [])
 
   useEffect(() => {
@@ -41,6 +45,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <Dashboard changeAbsences={setAbsences} allAbsences={allAbsences}/>
       <AbsencesTable absences={absencesOnPage} />
       <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
     </div> 

@@ -4,18 +4,20 @@ interface IProps {
     startDate: string,
     endDate: string,
     memberNote: string,
-    confirmedAt: string,
-    rejectedAt: string,
-    admitternote: string,
+    admitterNote: string,
+    status: string,
 }
 
-const AbsenceRow: React.FunctionComponent<IProps> = ({ name, type, startDate, endDate, memberNote, confirmedAt, rejectedAt, admitternote }) => {
+const AbsenceRow: React.FunctionComponent<IProps> = ({ name, type, startDate, endDate, status, memberNote, admitterNote }) => {
     return (
         <tr>
             <td>{name}</td>
             <td >{type}</td>
             <td>{startDate}</td>
             <td>{endDate}</td>
+            <td>{status}</td>
+            <td>{memberNote}</td>
+            <td>{admitterNote}</td>
         </tr>
     )
 }

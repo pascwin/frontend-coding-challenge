@@ -5,14 +5,17 @@ import { Table } from "react-bootstrap"
 
 export const AbsencesTable = ({ absences }: { absences: Array<IAbsences> }) => {
     return (
-        <div>
-            <Table striped bordered hover size="sm">
+        <div className="table">
+            <Table striped bordered hover size="sm" >
                 <thead>
                     <tr>
                         <th>name</th>
                         <th>type</th>
                         <th>startDate</th>
                         <th>endDate</th>
+                        <th>status</th>
+                        <th>Member Note</th>
+                        <th>Admitter Note</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,12 +25,11 @@ export const AbsencesTable = ({ absences }: { absences: Array<IAbsences> }) => {
                                 key={i}
                                 name={absence.name}
                                 type={absence.type}
+                                status={absence.status}
                                 startDate={absence.startDate}
                                 endDate={absence.endDate}
                                 memberNote={absence.memberNote}
-                                confirmedAt={absence.confirmedAt}
-                                rejectedAt={absence.rejectedAt}
-                                admitternote={absence.admitternote}
+                                admitterNote={absence.admitterNote}
                             />
                         })
                     }
