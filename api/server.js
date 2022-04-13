@@ -20,6 +20,27 @@ app.get("/members", (req, res) => {
 app.get("/absences", (req, res) => {
     const enrichedAbsence = []
     db.absenceData.forEach((absence, i) => {
+
+        db.membersData.forEach(member => {
+            if(absence.userId === member.userId) {
+                absence["name"] = member.name;
+                enrichedAbsence.push(absence);
+            }
+        });
+    })
+    res.send(enrichedAbsence)
+})
+
+app.get("/absences2", (req, res) => {
+    const enrichedAbsence = []
+    db.absenceData.forEach((absence, i) => {
+        if (absence.confirmedAt) {
+            absence["status"] = "confirmed"
+        } else if (absence.rejectedAt) {
+            absence["status"] = "rejected"
+        } else {
+            absence["status"] = "requested"
+        }
         db.membersData.forEach(member => {
             if(absence.userId === member.userId) {
                 absence["name"] = member.name;
