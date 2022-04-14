@@ -4,6 +4,7 @@ import cors from "cors"
 
 const app = express()
 app.use(cors())
+
 const db = {
     absenceData: await absences(),
     membersData: await members()
@@ -18,21 +19,12 @@ app.get("/members", (req, res) => {
 })
 
 app.get("/absences", (req, res) => {
-    const enrichedAbsence = []
-    db.absenceData.forEach((absence, i) => {
-
-        db.membersData.forEach(member => {
-            if(absence.userId === member.userId) {
-                absence["name"] = member.name;
-                enrichedAbsence.push(absence);
-            }
-        });
-    })
+    const enrichedAbsence = enrichAbsences()
     res.send(enrichedAbsence)
 })
 
-app.get("/absences2", (req, res) => {
-    const enrichedAbsence = []
+const enrichAbsences = () => {
+    const enrichedAbsences = []
     db.absenceData.forEach((absence, i) => {
         if (absence.confirmedAt) {
             absence["status"] = "confirmed"
@@ -44,12 +36,14 @@ app.get("/absences2", (req, res) => {
         db.membersData.forEach(member => {
             if(absence.userId === member.userId) {
                 absence["name"] = member.name;
-                enrichedAbsence.push(absence);
+                enrichedAbsences.push(absence);
             }
         });
     })
-    res.send(enrichedAbsence)
-})
+        return enrichedAbsences;
+}
+
+
 
 app.listen(3000, () => {
     console.log("app is running on port 3000");
