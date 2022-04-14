@@ -22,7 +22,7 @@ const App = () => {
   const [allAbsences, setAllAbsences] = useState<any[]>([])
 
   useEffect(() => {
-    fetch("http://localhost:3000/absences2")
+    fetch("http://localhost:3000/absences")
       .then(res => res.json())
       .then(absences => {
         setAbsences(absences)
@@ -37,19 +37,12 @@ const App = () => {
     setAbsencesOnPage(absences.slice(startingIndex, endingIndex))
   }, [absences, actualPage])
 
-  // useEffect(() => {
-  //   fetch("http://localhost:3000/members")
-  //     .then(res => res.json())
-  //     .then(members => setMembers(members))
-  // }, [])
-
   return (
     <div className="App">
       <Dashboard changeAbsences={setAbsences} allAbsences={allAbsences}/>
       <AbsencesTable absences={absencesOnPage} />
       <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
-    </div> 
-
+    </div>
   );
 }
 

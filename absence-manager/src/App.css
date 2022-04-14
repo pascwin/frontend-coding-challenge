@@ -9,9 +9,43 @@
 .pagination {
   display: flex;
   justify-content: center;
+  margin: 10px;
+}
+
+.absences-container {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px;
 }
 
 .filter-container {
   display: flex;
-  align-items: flex-start;
+  flex-direction: row;
+}
+
+.filter-title {
+  margin: 10px;
+}
+
+.filter-dropdown {
+  margin: 10px;
+  margin-left: 40px;
+}
+
+.datepicker-container {
+  display: flex;
+  width: 325px;
+  justify-items: center;
+  align-items: center;
+  margin-left: 50px;
+}
+
+.datepicker {
+  justify-content: center;
+}
+
+.datepicker-button {
+  justify-content: center;
+  margin-left: 5px;
+  width: 300px;
 }
