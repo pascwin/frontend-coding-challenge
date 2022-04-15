@@ -1,8 +1,10 @@
 import express from "express"
 import { absences, members } from "./api.js"
 import cors from "cors"
+import bodyParser from "body-parser"
 
 const app = express()
+app.use(bodyParser.json())
 app.use(cors())
 
 const db = {
@@ -14,14 +16,45 @@ app.get("/", (req, res) => {
     res.send("hello")
 })
 
-app.get("/members", (req, res) => {
-    res.send(db.membersData)
+app.post("/absences", (req, res) => {
+    const { date, status } = req.body
+    const enrichedAbsences = enrichAbsences()
+    if (!date && status === "no status filter") {
+        res.send(enrichedAbsences)
+    } else {
+        const filteredAbsences = filterAbsences(date, status)
+        res.send(filteredAbsences)
+    }
 })
 
-app.get("/absences", (req, res) => {
-    const enrichedAbsence = enrichAbsences()
-    res.send(enrichedAbsence)
-})
+
+const filterAbsences = (date, status) => {
+    const enrichedAbsences = enrichAbsences()
+    const filteredAbsences = []
+    if (date && status !== "no status filter") {
+        enrichedAbsences.forEach(absence => {
+            if (absence.status === status && absence.startDate > date) {
+                filteredAbsences.push(absence)
+            }
+        })
+        return filteredAbsences;
+    } else if (date && status === "no status filter") {
+        enrichedAbsences.forEach(absence => {
+            if (absence.startDate > date) {
+                filteredAbsences.push(absence)
+            }
+        })
+        console.log("hello")
+        return filteredAbsences;
+    } else {
+        enrichedAbsences.forEach(absence => {
+            if (absence.status === status) {
+                filteredAbsences.push(absence)
+            }
+        })
+        return filteredAbsences;
+    }
+}
 
 const enrichAbsences = () => {
     const enrichedAbsences = []
@@ -34,13 +67,13 @@ const enrichAbsences = () => {
             absence["status"] = "requested"
         }
         db.membersData.forEach(member => {
-            if(absence.userId === member.userId) {
+            if (absence.userId === member.userId) {
                 absence["name"] = member.name;
                 enrichedAbsences.push(absence);
             }
         });
     })
-        return enrichedAbsences;
+    return enrichedAbsences;
 }
 
 
