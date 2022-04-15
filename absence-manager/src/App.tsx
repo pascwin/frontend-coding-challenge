@@ -19,16 +19,24 @@ const App = () => {
   const [numberPages, setNumberPages] = useState(10)
   const [actualPage, setActualPage] = useState(1)
   const [absencesOnPage, setAbsencesOnPage] = useState<any[]>([])
-  const [allAbsences, setAllAbsences] = useState<any[]>([])
+  const [date, setDate] = useState<any>(null)
+  const [status, setStatus] = useState("no status filter")
 
   useEffect(() => {
-    fetch("http://localhost:3000/absences")
+    fetch("http://localhost:3000/absences", {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        date: date,
+        status: status
+      })
+    })
       .then(res => res.json())
       .then(absences => {
+        console.log(absences)
         setAbsences(absences)
-        setAllAbsences(absences)
       })
-  }, [])
+  }, [date, status])
 
   useEffect(() => {
     const startingIndex = actualPage === 1 ? 0 : (actualPage - 1) * 10;
@@ -39,7 +47,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Dashboard changeAbsences={setAbsences} allAbsences={allAbsences}/>
+      <Dashboard status={status} absences={absences} setFilterDate={setDate} setFilterStatus={setStatus} />
       <AbsencesTable absences={absencesOnPage} />
       <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
     </div>
