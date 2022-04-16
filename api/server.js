@@ -1,11 +1,12 @@
 import express from "express"
-import { absences, members } from "./api.js"
 import cors from "cors"
 import bodyParser from "body-parser"
 
 const app = express()
 app.use(bodyParser.json())
 app.use(cors())
+
+import { absences, members } from "./api.js"
 
 const db = {
     absenceData: await absences(),
@@ -27,7 +28,6 @@ app.post("/absences", (req, res) => {
     }
 })
 
-
 const filterAbsences = (date, status) => {
     const enrichedAbsences = enrichAbsences()
     const filteredAbsences = []
@@ -44,7 +44,6 @@ const filterAbsences = (date, status) => {
                 filteredAbsences.push(absence)
             }
         })
-        console.log("hello")
         return filteredAbsences;
     } else {
         enrichedAbsences.forEach(absence => {
@@ -59,13 +58,7 @@ const filterAbsences = (date, status) => {
 const enrichAbsences = () => {
     const enrichedAbsences = []
     db.absenceData.forEach((absence, i) => {
-        if (absence.confirmedAt) {
-            absence["status"] = "confirmed"
-        } else if (absence.rejectedAt) {
-            absence["status"] = "rejected"
-        } else {
-            absence["status"] = "requested"
-        }
+        absence["status"] = addStatus(absence)
         db.membersData.forEach(member => {
             if (absence.userId === member.userId) {
                 absence["name"] = member.name;
@@ -76,7 +69,15 @@ const enrichAbsences = () => {
     return enrichedAbsences;
 }
 
-
+const addStatus = (absence) => {
+    if (absence.confirmedAt) {
+        return "confirmed"
+    } else if (absence.rejectedAt) {
+        return "rejected"
+    } else {
+        return "requested"
+    }
+}
 
 app.listen(3000, () => {
     console.log("app is running on port 3000");
