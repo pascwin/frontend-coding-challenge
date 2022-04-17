@@ -1,5 +1,5 @@
-import { IAbsences } from "../App"
-import AbsenceRow from "./absenceRow"
+import { IAbsences } from "../../App"
+import AbsenceRow from "../AbsenceRow/absenceRow"
 import { Table } from "react-bootstrap"
 
 

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { AbsencesTable } from './components/absencesTable';
+import { AbsencesTable } from './components/AbsencesTable/absencesTable';
 import { AppPagination } from './components/appPagination'
 import { Dashboard } from './components/dashboard';
 import "./App.css"
+import { Loader } from './components/loader';
 
 export interface IAbsences {
   name: string,
@@ -21,8 +22,10 @@ const App = () => {
   const [absencesOnPage, setAbsencesOnPage] = useState<any[]>([])
   const [date, setDate] = useState<any>(null)
   const [status, setStatus] = useState("no status filter")
+  const [load, setLoad] = useState<boolean>(true)
 
   useEffect(() => {
+    window.setTimeout(hideLaoder, 500)
     fetch("http://localhost:3000/absences", {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -36,7 +39,14 @@ const App = () => {
         console.log(absences)
         setAbsences(absences)
       })
+      .catch((err) => {
+        console.error(err)
+      })
   }, [date, status])
+
+  const hideLaoder = () => {
+    setLoad(false)
+  }
 
   useEffect(() => {
     const startingIndex = actualPage === 1 ? 0 : (actualPage - 1) * 10;
@@ -47,9 +57,17 @@ const App = () => {
 
   return (
     <div className="App">
-      <Dashboard status={status} absences={absences} setFilterDate={setDate} setFilterStatus={setStatus} />
-      <AbsencesTable absences={absencesOnPage} />
-      <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
+      <div>
+        <h1 id="app-header">Absence Manager</h1>
+      </div>
+      <Dashboard status={status} absences={absences} setFilterDate={setDate} setFilterStatus={setStatus} showLoader={setLoad}/>
+      {load ? 
+        <Loader /> :
+        <>
+        <AbsencesTable absences={absencesOnPage} />
+        <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
+        </>
+      }
     </div>
   );
 }

@@ -4,38 +4,25 @@ import { Dropdown, DropdownButton, Form, Button } from "react-bootstrap"
 interface IDashboard {
     setFilterDate: (date: string) => void,
     setFilterStatus: (status: string) => void,
+    showLoader: (load: boolean) => void,
     absences: Array<any>,
     status: string,
 }
 
 export const Dashboard = (props: IDashboard) => {
-    const { status, absences, setFilterStatus, setFilterDate } = props
+    const { status, absences, setFilterStatus, setFilterDate, showLoader } = props
 
     const filterStatus = (event: React.MouseEvent<HTMLButtonElement>) => {
+        showLoader(true)
         const status = (event.target as HTMLElement).innerHTML
         setFilterStatus(status)
     }
 
     const filterDate = (event: React.MouseEvent<HTMLButtonElement>) => {
+        showLoader(true)
         const startDate = (document.getElementById("date") as HTMLInputElement).value
         setFilterDate(startDate)
     }
-
-    // useEffect(() => {
-    //     fetch("http://localhost:3000/absences", {
-    //         method: 'post',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({
-    //             date: date,
-    //             status: status
-    //         })
-    //     })
-    //         .then(res => res.json())
-    //         .then(absences => {
-    //             console.log(absences)
-    //             changeAbsences(absences)
-    //         })
-    // }, [date, status])
 
     return (
         <div>
