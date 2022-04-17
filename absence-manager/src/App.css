@@ -53,3 +53,7 @@
 .spinner-container {
   margin: 100px
 }
+
+.empty-state {
+  padding: 100px;
+}

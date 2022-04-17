@@ -36,7 +36,6 @@ const App = () => {
     })
       .then(res => res.json())
       .then(absences => {
-        console.log(absences)
         setAbsences(absences)
       })
       .catch((err) => {

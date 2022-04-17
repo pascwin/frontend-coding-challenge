@@ -35,6 +35,9 @@ export const AbsencesTable = ({ absences }: { absences: Array<IAbsences> }) => {
                     }
                 </tbody>
             </Table>
+            {
+                absences.length === 0 && <h2 className="empty-state">No absences with this filters</h2>
+            }
         </div>
 
     )
