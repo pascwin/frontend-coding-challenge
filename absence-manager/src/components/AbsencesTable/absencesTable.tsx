@@ -5,8 +5,8 @@ import { Table } from "react-bootstrap"
 
 export const AbsencesTable = ({ absences }: { absences: Array<IAbsences> }) => {
     return (
-        <div className="table">
-            <Table striped bordered hover size="sm" >
+        <div className="table-container">
+            <Table striped bordered hover size="sm" className="table">
                 <thead>
                     <tr>
                         <th>name</th>

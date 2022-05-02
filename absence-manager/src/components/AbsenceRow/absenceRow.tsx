@@ -11,13 +11,13 @@ interface IProps {
 const AbsenceRow: React.FunctionComponent<IProps> = ({ name, type, startDate, endDate, status, memberNote, admitterNote }) => {
     return (
         <tr>
-            <td>{name}</td>
-            <td >{type}</td>
-            <td>{startDate}</td>
-            <td>{endDate}</td>
-            <td>{status}</td>
-            <td>{memberNote}</td>
-            <td>{admitterNote}</td>
+            <td className="table-cell">{name}</td>
+            <td className="table-cell">{type}</td>
+            <td className="table-cell">{startDate}</td>
+            <td className="table-cell">{endDate}</td>
+            <td className="table-cell">{status}</td>
+            <td className="table-cell">{memberNote}</td>
+            <td className="table-cell">{admitterNote}</td>
         </tr>
     )
 }

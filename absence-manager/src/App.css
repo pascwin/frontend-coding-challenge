@@ -2,8 +2,26 @@
   text-align: center;
 }
 
+.table-container {
+  margin: 10px
+}
+
 .table {
-  margin-right: 50px;
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+    border-collapse: collapse
+}
+
+.table-cell {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  word-wrap: break-word;
+}
+
+.note-cell {
+  width: 200px;
 }
 
 .pagination {

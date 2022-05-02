@@ -25,7 +25,7 @@ const App = () => {
   const [load, setLoad] = useState<boolean>(true)
 
   useEffect(() => {
-    window.setTimeout(hideLaoder, 500)
+    window.setTimeout(hideLoader, 500)
     fetch("http://localhost:3000/absences", {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,7 @@ const App = () => {
       })
   }, [date, status])
 
-  const hideLaoder = () => {
+  const hideLoader = () => {
     setLoad(false)
   }
 
