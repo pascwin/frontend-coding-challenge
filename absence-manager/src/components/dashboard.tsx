@@ -26,9 +26,6 @@ export const Dashboard = (props: IDashboard) => {
 
     return (
         <div>
-            <div>
-                <h1>Absences</h1>
-            </div>
             <div className="absences-container">
                 <h2>Total number of absences: {absences.length}</h2>
             </div>

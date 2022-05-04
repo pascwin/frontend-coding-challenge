@@ -8,13 +8,15 @@ interface IPagination {
 }
 
 export const AppPagination = (props: IPagination) => {
+  const {pageHandler, page, numberPages} = props;
+  
   const switchPageHandler = (event: React.ChangeEvent<unknown>, value: number) => {
-    props.pageHandler(value)
+    pageHandler(value)
   }
 
   return (
     <div>
-      <Pagination variant="outlined" count={props.numberPages} className="pagination" onChange={switchPageHandler} page={props.page} />
+      <Pagination variant="outlined" count={numberPages} className="pagination" onChange={switchPageHandler} page={page} />
     </div>
   )
 }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+
 import { AbsencesTable } from './components/AbsencesTable/absencesTable';
 import { AppPagination } from './components/appPagination'
 import { Dashboard } from './components/dashboard';
-import "./App.css"
 import { Loader } from './components/loader';
+
+import "./App.css"
 
 export interface IAbsences {
   name: string,
@@ -59,12 +61,19 @@ const App = () => {
       <div>
         <h1 id="app-header">Absence Manager</h1>
       </div>
-      <Dashboard status={status} absences={absences} setFilterDate={setDate} setFilterStatus={setStatus} showLoader={setLoad}/>
-      {load ? 
-        <Loader /> :
+      <Dashboard
+        status={status}
+        absences={absences}
+        setFilterDate={setDate}
+        setFilterStatus={setStatus}
+        showLoader={setLoad}
+      />
+      {load ?
+        <Loader /> 
+        :
         <>
-        <AbsencesTable absences={absencesOnPage} />
-        <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
+          <AbsencesTable absences={absencesOnPage} />
+          <AppPagination numberPages={numberPages} page={actualPage} pageHandler={setActualPage} />
         </>
       }
     </div>

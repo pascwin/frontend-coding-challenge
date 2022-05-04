@@ -19,14 +19,38 @@ app.get("/", (req, res) => {
 
 app.post("/absences", (req, res) => {
     const { date, status } = req.body
-    const enrichedAbsences = enrichAbsences()
     if (!date && status === "no status filter") {
+        const enrichedAbsences = enrichAbsences()
         res.send(enrichedAbsences)
     } else {
         const filteredAbsences = filterAbsences(date, status)
         res.send(filteredAbsences)
     }
 })
+
+const enrichAbsences = () => {
+    const enrichedAbsences = []
+    db.absenceData.forEach((absence, i) => {
+        absence["status"] = addStatus(absence)
+        db.membersData.forEach(member => {
+            if (absence.userId === member.userId) {
+                absence["name"] = member.name;
+                enrichedAbsences.push(absence);
+            }
+        });
+    })
+    return enrichedAbsences;
+}
+
+const addStatus = (absence) => {
+    if (absence.confirmedAt) {
+        return "confirmed"
+    } else if (absence.rejectedAt) {
+        return "rejected"
+    } else {
+        return "requested"
+    }
+}
 
 const filterAbsences = (date, status) => {
     const enrichedAbsences = enrichAbsences()
@@ -52,30 +76,6 @@ const filterAbsences = (date, status) => {
             }
         })
         return filteredAbsences;
-    }
-}
-
-const enrichAbsences = () => {
-    const enrichedAbsences = []
-    db.absenceData.forEach((absence, i) => {
-        absence["status"] = addStatus(absence)
-        db.membersData.forEach(member => {
-            if (absence.userId === member.userId) {
-                absence["name"] = member.name;
-                enrichedAbsences.push(absence);
-            }
-        });
-    })
-    return enrichedAbsences;
-}
-
-const addStatus = (absence) => {
-    if (absence.confirmedAt) {
-        return "confirmed"
-    } else if (absence.rejectedAt) {
-        return "rejected"
-    } else {
-        return "requested"
     }
 }
 
