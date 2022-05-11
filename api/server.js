@@ -30,14 +30,14 @@ app.post("/absences", (req, res) => {
 
 const enrichAbsences = () => {
     const enrichedAbsences = []
+    const memberHashMap = {};
+    db.membersData.forEach((member) => {
+        memberHashMap[member.userId] = member.name;
+    })
     db.absenceData.forEach((absence, i) => {
         absence["status"] = addStatus(absence)
-        db.membersData.forEach(member => {
-            if (absence.userId === member.userId) {
-                absence["name"] = member.name;
-                enrichedAbsences.push(absence);
-            }
-        });
+        absence["name"] = memberHashMap[absence.userId]
+        enrichedAbsences.push(absence);
     })
     return enrichedAbsences;
 }
